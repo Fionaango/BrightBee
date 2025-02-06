@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   View, 
   Text, 
-  Image, 
   TextInput, 
   ScrollView, 
   StyleSheet, 
@@ -10,11 +9,14 @@ import {
   Switch,
   TouchableOpacity 
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; 
+
 
 const moods = [
-  { id: 1, name: 'Happy', icon: 'happy-outline', color: '#FFD700' },
-  { id: 2, name: 'Sad', icon: 'sad-outline', color: '#87CEFA' },
+  { id: 1, name: 'Happy', icon: 'happy-outline', color: '#FFD1DC' },    
+  { id: 2, name: 'Sad', icon: 'sad-outline', color: '#BFD8B8' },         
+  { id: 3, name: 'Excited', icon: 'rocket-outline', color: '#FEEAFA' },   
+  { id: 4, name: 'Relaxed', icon: 'leaf-outline', color: '#C9E4DE' }      
 ];
 
 export default function App() {
@@ -34,7 +36,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}> Mood Tracker</Text>
+      <Text style={styles.header}>Mood Tracker</Text>
       
       <View style={styles.moodContainer}>
         {moods.map(mood => (
@@ -52,19 +54,25 @@ export default function App() {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
-          placeholder="Whisper a secret (optional)."
+          placeholder="Whisper a secret (optional)"
+          placeholderTextColor="#888"
           value={note}
           onChangeText={setNote}
         />
-        <Button title="Add Mood" onPress={() => handleMoodSelect({ name: 'Custom', icon: 'construct-outline', color: '#D3D3D3' })} />
+        <Button 
+          title="Add Mood" 
+          color="#A3D2CA" 
+          onPress={() => handleMoodSelect({ name: 'Custom', icon: 'construct-outline', color: '#E9C46A' })}
+        />
       </View>
 
-      {/* Toggle Details Switch */}
       <View style={styles.switchContainer}>
         <Text style={styles.switchLabel}>Show Details</Text>
         <Switch 
           value={showDetails} 
           onValueChange={setShowDetails} 
+          trackColor={{ true: '#A3D2CA', false: '#ccc' }}
+          thumbColor={showDetails ? '#FFF' : '#f4f3f4'}
         />
       </View>
 
@@ -90,20 +98,21 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#FFF5EE'
+    paddingTop: 50,
+    paddingHorizontal: 20,
+    backgroundColor: '#FDFDFD'
   },
   header: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: '600',
     textAlign: 'center',
-    marginVertical: 10,
-    color: '#333'
+    marginBottom: 20,
+    color: '#555'
   },
   moodContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical: 15,
+    marginBottom: 20,
     flexWrap: 'wrap'
   },
   moodButton: {
@@ -112,46 +121,55 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    margin: 5
+    margin: 5,
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   moodText: {
     color: '#fff',
     marginTop: 5,
-    fontWeight: '600'
+    fontWeight: '500'
   },
   inputContainer: {
-    marginVertical: 10
+    marginBottom: 20,
   },
   textInput: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 10,
-    marginBottom: 10
+    marginBottom: 10,
+    backgroundColor: '#FFF',
+    color: '#333'
   },
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginVertical: 10
+    marginBottom: 10
   },
   switchLabel: {
     fontSize: 16,
-    color: '#333'
+    color: '#555'
   },
   historyContainer: {
     flex: 1,
-    marginTop: 10
+    marginTop: 10,
   },
   historyEntry: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderRadius: 10,
-    padding: 10,
+    padding: 12,
     marginBottom: 10,
     alignItems: 'center',
-    elevation: 2 // adds subtle shadow on Android; on iOS, consider shadow props
+    shadowColor: '#000', 
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   iconContainer: {
     width: 40,
@@ -159,17 +177,18 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10
+    marginRight: 10,
   },
   entryDetails: {
     flex: 1
   },
   entryText: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: '500',
+    color: '#333'
   },
   entryNote: {
     fontSize: 14,
-    color: '#555'
+    color: '#777'
   }
 });
