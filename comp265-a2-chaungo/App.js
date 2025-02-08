@@ -5,22 +5,21 @@ import {
   TextInput, 
   ScrollView, 
   StyleSheet, 
-  Button, 
   Switch,
   TouchableOpacity 
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 const moods = [
-  { id: 1, name: 'Happy', icon: 'smile-beam', color: '#FFD1DC' },
-  { id: 2, name: 'Sad', icon: 'sad-cry', color: '#BFD8B8' },
-  { id: 3, name: 'Excited', icon: 'grin-stars', color: '#FEEAFA' },
-  { id: 4, name: 'Relaxed', icon: 'smile', color: '#C9E4DE' },
-  { id: 5, name: 'Angry', icon: 'angry', color: '#FFC0CB' },
-  { id: 6, name: 'Surprised', icon: 'surprise', color: '#FFB6C1' },
-  { id: 7, name: 'Bored', icon: 'meh', color: '#B0E0E6' },
-  { id: 8, name: 'Anxious', icon: 'dizzy', color: '#E6E6FA' },
-  { id: 9, name: 'Calm', icon: 'smile-wink', color: '#AFEEEE' },
+  { id: 1, name: 'Happy', icon: 'smile-beam', color: '#eae4e9' },
+  { id: 2, name: 'Sad', icon: 'sad-cry', color: '#fff1e6' },
+  { id: 3, name: 'Excited', icon: 'grin-stars', color: '#fde2e4' },
+  { id: 4, name: 'Relaxed', icon: 'smile', color: '#fad2e1' },
+  { id: 5, name: 'Angry', icon: 'angry', color: '#ff8680' },
+  { id: 6, name: 'Surprised', icon: 'surprise', color: '#bee1e6' },
+  { id: 7, name: 'Bored', icon: 'meh', color: '#f0efeb' },
+  { id: 8, name: 'Anxious', icon: 'dizzy', color: '#ffd4a1' },
+  { id: 9, name: 'Calm', icon: 'smile-wink', color: '#cddafd' },
 ];
 
 const generateUniqueKey = () => {
@@ -62,11 +61,11 @@ export default function App() {
         {moods.map(mood => (
           <TouchableOpacity 
             key={mood.id} 
-            style={[styles.moodButton, { backgroundColor: mood.color }]}
+            style={[styles.moodButton, { backgroundColor: mood.color }]} 
             onPress={() => handleMoodSelect(mood)}
           >
-            <FontAwesome5 name={mood.icon} size={32} color="#fff" />
-            <Text style={styles.moodText}>{mood.name}</Text>
+            <FontAwesome5 name={mood.icon} size={20} style={[styles.moodIcon, { color: '#555' }]} />
+            <Text style={[styles.moodText, { color: '#555' }]}>{mood.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -78,26 +77,24 @@ export default function App() {
           value={note}
           onChangeText={setNote}
         />
-        <Button 
-          title="Add Mood" 
-          color="#A3D2CA" 
-          onPress={() => handleMoodSelect({ name: 'Custom', icon: 'tools', color: '#E9C46A' })}
-        />
+        <TouchableOpacity style={styles.addButton} onPress={() => handleMoodSelect({ name: 'Custom', icon: 'tools', color: '#cddafd' })}>
+          <Text style={styles.addButtonText}>Add Mood</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.switchContainer}>
         <Text style={styles.switchLabel}>Show Details</Text>
         <Switch 
           value={showDetails} 
           onValueChange={setShowDetails} 
-          trackColor={{ true: '#A3D2CA', false: '#ccc' }}
+          trackColor={{ true: '#bee1e6', false: '#ccc' }}
           thumbColor={showDetails ? '#FFF' : '#f4f3f4'}
         />
       </View>
       <ScrollView style={styles.historyContainer}>
         {moodHistory.map((entry) => (
           <View key={entry.key} style={styles.historyEntry}>
-            <View style={[styles.iconContainer, { backgroundColor: entry.color }]}>
-              <FontAwesome5 name={entry.icon} size={24} color="#fff" />
+            <View style={[styles.iconContainer, { backgroundColor: entry.color }]}> 
+              <FontAwesome5 name={entry.icon} size={18} color="#555" />
             </View>
             <View style={styles.entryDetails}>
               <Text style={styles.entryText}>{entry.name} - {entry.time}</Text>
@@ -109,7 +106,7 @@ export default function App() {
               onPress={() => handleDelete(entry.key)} 
               style={styles.deleteButton}
             >
-              <FontAwesome5 name="trash-alt" size={24} color="#FF6B6B" />
+              <FontAwesome5 name="trash-alt" size={18} color="#FF6B6B" />
             </TouchableOpacity>
           </View>
         ))}
@@ -126,11 +123,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FDFDFD'
   },
   header: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '600',
     textAlign: 'center',
     marginBottom: 10,
-    color: '#555'
+    color: '#555',
+    padding:5,
   },
   greeting: {
     fontSize: 20,
@@ -142,26 +140,29 @@ const styles = StyleSheet.create({
   moodContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     marginBottom: 20,
   },
   moodButton: {
-    flexBasis: '28%',
+    width: 85,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 80,
-    borderRadius: 40,
+    height: 60,
+    borderRadius: 30,
     marginVertical: 8,
-    marginHorizontal: 4,
+    marginHorizontal: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
   },
   moodText: {
-    color: '#fff',
     marginTop: 5,
-    fontWeight: '500'
+    fontWeight: '700',
+    fontSize: 12
+  },
+  moodIcon: {
+    fontWeight: '700'
   },
   inputContainer: {
     marginBottom: 20,
@@ -175,6 +176,18 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: '#FFF',
     color: '#333'
+  },
+  addButton: {
+    backgroundColor: '#bee1e6',
+    padding: 10,
+    marginLeft:120,
+    marginRight:120,
+    borderRadius: 15,
+    alignItems: 'center',
+  },
+  addButtonText: {
+    color: '#FFF',
+    fontWeight: '700'
   },
   switchContainer: {
     flexDirection: 'row',
@@ -203,9 +216,9 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   iconContainer: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
