@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   addButtonText: {
-    color: '#FFF',
+    color: '#555',
     fontWeight: '700'
   },
   switchContainer: {
