@@ -1,64 +1,40 @@
-import React, { createContext, useState } from 'react';
+// app/_layout.js
+import React from 'react';
 import { Tabs } from 'expo-router';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { JournalProvider } from './context/journalContext';
-import sharedStyles from './sharedStyles'; 
-
-export const ThemeContext = createContext();
-
-const darkBackground = '#333';
-const lightText = '#333';
-const darkText = '#FFF';
+import { StudyProvider } from '../StudyContext';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function RootLayout() {
-  const [isDark, setIsDark] = useState(false);
-  const toggleTheme = () => setIsDark((prev) => !prev);
-
   return (
-    <JournalProvider>
-      <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-            tabBarActiveTintColor: isDark ? darkText : lightText,
-            tabBarInactiveTintColor: isDark ? '#AAA' : '#888',
-            tabBarStyle: { backgroundColor: isDark ? darkBackground : '#FFF' },
-          }}
-        >
-          {/* Example tabs */}
-          <Tabs.Screen
-            name="home"
-            options={{
-              title: 'Home',
-              tabBarIcon: ({ color, size }) => (
-                <FontAwesome5 name="home" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="profile"
-            options={{
-              title: 'Profile',
-              tabBarIcon: ({ color, size }) => (
-                <FontAwesome5 name="user" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="settings"
-            options={{
-              title: 'Setting',
-              tabBarIcon: ({ color, size }) => (
-                <FontAwesome5 name="cog" size={size} color={color} />
-              ),
-            }}
-          />
-          <Tabs.Screen name="index" options={{ href: null }} />
-          <Tabs.Screen name="modal" options={{ href: null }} />
-          <Tabs.Screen name="sharedStyles" options={{ href: null }} />
-          <Tabs.Screen name="friend" options={{ href: null }} />
-        </Tabs>
-      </ThemeContext.Provider>
-    </JournalProvider>
+    <StudyProvider>
+      <Tabs
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarActiveTintColor: '#FFC700', // bright yellow when active
+          tabBarInactiveTintColor: '#1A1A1A', // black when inactive
+          tabBarLabelStyle: {
+            fontWeight: 'normal', // use 'normal' instead of 'regular'
+          },
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName = 'help-circle';
+            if (route.name === 'index') {
+              iconName = focused ? 'home' : 'home-outline';
+            } else if (route.name === 'timer') {
+              iconName = focused ? 'time' : 'time-outline';
+            } else if (route.name === 'dashboard') {
+              iconName = focused ? 'bar-chart' : 'bar-chart-outline';
+            } else if (route.name === 'profile') {
+              iconName = focused ? 'person' : 'person-outline';
+            }
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+      >
+        <Tabs.Screen name="index" options={{ title: 'Home' }} />
+        <Tabs.Screen name="timer" options={{ title: 'Timer' }} />
+        <Tabs.Screen name="dashboard" options={{ title: 'Dashboard' }} />
+        <Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+      </Tabs>
+    </StudyProvider>
   );
 }
